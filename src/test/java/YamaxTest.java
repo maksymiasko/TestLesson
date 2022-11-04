@@ -233,6 +233,7 @@ public class YamaxTest {
         driver.get(url);
         Thread.sleep(2000);
 
+
         driver.quit();
     }
 
