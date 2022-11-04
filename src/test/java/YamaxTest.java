@@ -119,7 +119,7 @@ public class YamaxTest {
                 By.xpath("//div[@id='weather-widget']//span[@class = 'heading']"));
         Thread.sleep(2000);
         String actualResult1 = searchFahrenheitSign.getText();
-        actualResult1 = actualResult1.substring(actualResult1.length()-1);
+        actualResult1 = actualResult1.substring(actualResult1.length() - 1);
 
         Assert.assertEquals(actualResult0, expectedResult0);
         Assert.assertEquals(actualResult1, expectedResult1);
@@ -128,7 +128,7 @@ public class YamaxTest {
     }
 
     //    TC_11_03
-//1.  Открыть базовую ссылку
+//1. Открыть базовую ссылку
 //2. Подтвердить, что внизу страницы есть панель с текстом
 //3. Подтвердить, что на панели внизу страницы есть 2 кнопки “Allow all” и “Manage cookies”
     @Test
@@ -177,6 +177,7 @@ public class YamaxTest {
     public void testConfirmSupportSubMenu() throws InterruptedException {
         System.setProperty("webdriver.chrome.driver", "/C:\\chromedriver_win32\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
 
         String url = "http://openweathermap.org/";
         String expectedResult0 = "FAQ";
@@ -210,6 +211,51 @@ public class YamaxTest {
         Assert.assertEquals(actualResult0, expectedResult0);
         Assert.assertEquals(actualResult1, expectedResult1);
         Assert.assertEquals(actualResult2, expectedResult2);
+
+        driver.quit();
+    }
+
+    //    TC_11_05
+//1.  Открыть базовую ссылку
+//2.  Нажать пункт меню Support → Ask a question
+//3.  Заполнить поля Email, Subject, Message
+//4.  Не подтвердив CAPTCHA, нажать кнопку Submit
+//5.  Подтвердить, что пользователю будет показана ошибка “reCAPTCHA verification failed, please try again.”
+    @Test
+// Что, Где, Когда
+    public void testConfirmCaptchaVerificationFailed() throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver", "/C:\\chromedriver_win32\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+
+        String url = "http://openweathermap.org/";
+        String expectedResult0 = "FAQ";
+
+        driver.get(url);
+        Thread.sleep(2000);
+
+        driver.quit();
+    }
+
+    //    TC_11_06
+//1.  Открыть базовую ссылку
+//2.  Нажать пункт меню Support → Ask a question
+//3.  Оставить значение по умолчанию в checkbox Are you an OpenWeather user?
+//4.  Оставить пустым поле Email
+//5.  Заполнить поля  Subject, Message
+//6.  Подтвердить CAPTCHA
+//7.  Нажать кнопку Submit
+//8.  Подтвердить, что в поле Email пользователю будет показана ошибка “can't be blank”
+    @Test
+// Что, Где, Когда
+    public void testConfirmErrorInEmailField() throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver", "/C:\\chromedriver_win32\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+
+        String url = "http://openweathermap.org/";
+        String expectedResult0 = "FAQ";
+
+        driver.get(url);
+        Thread.sleep(2000);
 
         driver.quit();
     }
