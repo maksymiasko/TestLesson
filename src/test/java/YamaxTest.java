@@ -226,13 +226,70 @@ public class YamaxTest {
     public void testConfirmCaptchaVerificationFailed() throws InterruptedException {
         System.setProperty("webdriver.chrome.driver", "/C:\\chromedriver_win32\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
 
         String url = "http://openweathermap.org/";
-        String expectedResult0 = "FAQ";
+        String email = "putin@huilo.com";
+        String message = "test massage";
+        String expectedResult = "reCAPTCHA verification failed, please try again.";
 
         driver.get(url);
         Thread.sleep(2000);
 
+        WebElement searchSupportMenu = driver.findElement(
+                By.xpath("//div[@id ='support-dropdown']"));
+        Thread.sleep(2000);
+        searchSupportMenu.click();
+
+        WebElement searchAskAQuestSubmenu = driver.findElement(
+                By.xpath("//ul[@id='support-dropdown-menu']" +
+                        "/li/a[@href = 'https://home.openweathermap.org/questions']"));
+        Thread.sleep(2000);
+        searchAskAQuestSubmenu.click();
+
+      //  Thread.sleep(2000);
+        String mainWindows = driver.getWindowHandle(); // getting Id of mainWindows
+        for (String windowsHandle : driver.getWindowHandles()) {
+            if (!mainWindows.contentEquals(windowsHandle)) {
+                driver.switchTo().window(windowsHandle);
+                break;
+            }
+        }
+        WebElement searchEmailField = driver.findElement(
+                By.xpath("//div[@class = 'col-sm-8']//input[@id='question_form_email']"));
+        Thread.sleep(2000);
+        searchEmailField.click();
+        searchEmailField.sendKeys("putin@huilo.com");
+
+        WebElement searchSubjectField = driver.findElement(
+                By.xpath("//div[@class = 'col-sm-8']/select[@id='question_form_subject']"));
+        Thread.sleep(2000);
+        searchSubjectField.click();
+
+        WebElement searchSubjectFieldText = driver.findElement(
+                By.xpath("//div[@class = 'col-sm-8']/select[@id='question_form_subject']//option[7]"));
+        Thread.sleep(2000);
+        searchSubjectFieldText.click();
+        Thread.sleep(2000);
+        searchSubjectField.click();
+
+        WebElement searchMassageField = driver.findElement(
+              By.xpath("//textarea[@class = 'form-control text required']"));
+        Thread.sleep(2000);
+        searchMassageField.click();
+        searchMassageField.sendKeys("test massage");
+
+        WebElement searchSubmitButton = driver.findElement(
+                By.xpath("//div[@class = 'col-sm-8']//input[@type ='submit']"));
+        Thread.sleep(2000);
+        searchSubmitButton.click();
+
+
+        WebElement searchCaptchaMassage = driver.findElement(
+                By.xpath("//div[@class = 'help-block']"));
+        String actualResult = searchCaptchaMassage.getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
 
         driver.quit();
     }
