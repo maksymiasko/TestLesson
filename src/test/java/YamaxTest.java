@@ -273,7 +273,7 @@ public class YamaxTest {
         searchSubjectField.click();
 
         WebElement searchMassageField = driver.findElement(
-              By.xpath("//textarea[@class = 'form-control text required']"));
+                By.xpath("//textarea[@class = 'form-control text required']"));
         Thread.sleep(2000);
         searchMassageField.click();
         searchMassageField.sendKeys(message);
@@ -377,7 +377,7 @@ public class YamaxTest {
         driver.quit();
     }
 
-//    TC_11_07
+    //    TC_11_07
 //1.  Открыть базовую ссылку
 //2.  Нажать на единицы измерения Imperial: °F, mph
 //3.  Нажать на единицы измерения Metric: °C, m/s
@@ -407,6 +407,32 @@ public class YamaxTest {
         Thread.sleep(2000);
         String actualResult = searchMetricField.getText();
 
+        Assert.assertEquals(actualResult, expectedResult);
+
+        driver.quit();
+    }
+
+    //    TC_11_08
+//1.  Открыть базовую ссылку
+//2.  Нажать на лого компании
+//3.  Дождаться, когда произойдет перезагрузка сайта, и подтвердить, что текущая ссылка не изменилась
+    @Test
+// Что, Где, Когда
+    public void testConfirmLinkNoChangeByLogoClick() throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver", "/C:\\chromedriver_win32\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+
+        String url = "http://openweathermap.org/";
+        String expectedResult = "https://openweathermap.org/";
+
+        driver.get(url);
+        Thread.sleep(2000);
+
+        WebElement searchLogoField = driver.findElement(By.xpath("//a[@href ='/' ]"));
+        Thread.sleep(2000);
+        searchLogoField.click();
+
+        String actualResult = driver.getCurrentUrl();
         Assert.assertEquals(actualResult, expectedResult);
 
         driver.quit();
