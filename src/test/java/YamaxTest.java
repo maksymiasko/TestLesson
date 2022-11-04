@@ -377,4 +377,38 @@ public class YamaxTest {
         driver.quit();
     }
 
+//    TC_11_07
+//1.  Открыть базовую ссылку
+//2.  Нажать на единицы измерения Imperial: °F, mph
+//3.  Нажать на единицы измерения Metric: °C, m/s
+//4.  Подтвердить, что в результате этих действий, единицы измерения температуры изменились с F на С
+    @Test
+    // Что, Где, Когда
+    public void testConfirmImperialToMetricChange() throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver", "/C:\\chromedriver_win32\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        String url = "http://openweathermap.org/";
+        String expectedResult = "Metric: °C, m/s";
+
+        driver.get(url);
+        Thread.sleep(2000);
+
+        WebElement searchImperialField = driver.findElement(
+                By.xpath("//div[@class = 'switch-container']/div[3]"));
+        Thread.sleep(2000);
+        searchImperialField.click();
+
+        WebElement searchMetricField = driver.findElement(
+                By.xpath("//div[@class = 'switch-container']/div[2]"));
+        Thread.sleep(2000);
+        searchMetricField.click();
+        Thread.sleep(2000);
+        String actualResult = searchMetricField.getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+
+        driver.quit();
+    }
 }
