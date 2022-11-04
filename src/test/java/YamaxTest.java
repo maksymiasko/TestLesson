@@ -28,6 +28,7 @@ public class YamaxTest {
         Thread.sleep(2000);
         WebElement searchCityField = driver.findElement(
                 By.xpath("//div[@id = 'weather-widget']//input[@placeholder = 'Search city']"));
+        Thread.sleep(2000);
         searchCityField.click();
         searchCityField.sendKeys(cityName);
 
@@ -155,6 +156,51 @@ public class YamaxTest {
         String actualResult0 = searchStickFooterPanelText.getText();
         String actualResult1 = searchButtonAllowAll.getText();
         String actualResult2 = searchButtonManageCookies.getText();
+
+        Assert.assertEquals(actualResult0, expectedResult0);
+        Assert.assertEquals(actualResult1, expectedResult1);
+        Assert.assertEquals(actualResult2, expectedResult2);
+
+        driver.quit();
+    }
+
+    //    TC_11_04
+//1.  Открыть базовую ссылку
+//2.  Подтвердить, что в меню Support есть 3 подменю с названиями “FAQ”, “How to start” и “Ask a question”
+    @Test
+// Что, Где, Когда
+    public void testConfirmSupportSubMenu() throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver", "/C:\\chromedriver_win32\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+
+        String url = "http://openweathermap.org/";
+        String expectedResult0 = "FAQ";
+        String expectedResult1 = "How to start";
+        String expectedResult2 = "Ask a question";
+
+        driver.get(url);
+        Thread.sleep(2000);
+
+        WebElement searchSupportMenu = driver.findElement(
+                By.xpath("//div[@id ='support-dropdown']"));
+        Thread.sleep(2000);
+        searchSupportMenu.click();
+
+        WebElement searchFaqSubmenu = driver.findElement(
+                By.xpath("//ul[@id='support-dropdown-menu']/li/a[@href = '/faq']"));
+        Thread.sleep(2000);
+        String actualResult0 = searchFaqSubmenu.getText();
+
+        WebElement searchHowToStartSubmenu = driver.findElement(
+                By.xpath("//ul[@id='support-dropdown-menu']/li/a[@href = '/appid']"));
+        Thread.sleep(2000);
+        String actualResult1 = searchHowToStartSubmenu.getText();
+
+        WebElement searchAskAQuestSubmenu = driver.findElement(
+                By.xpath("//ul[@id='support-dropdown-menu']" +
+                        "/li/a[@href = 'https://home.openweathermap.org/questions']"));
+        Thread.sleep(2000);
+        String actualResult2 = searchAskAQuestSubmenu.getText();
 
         Assert.assertEquals(actualResult0, expectedResult0);
         Assert.assertEquals(actualResult1, expectedResult1);
