@@ -247,7 +247,6 @@ public class YamaxTest {
         Thread.sleep(2000);
         searchAskAQuestSubmenu.click();
 
-      //  Thread.sleep(2000);
         String mainWindows = driver.getWindowHandle(); // getting Id of mainWindows
         for (String windowsHandle : driver.getWindowHandles()) {
             if (!mainWindows.contentEquals(windowsHandle)) {
@@ -277,7 +276,7 @@ public class YamaxTest {
               By.xpath("//textarea[@class = 'form-control text required']"));
         Thread.sleep(2000);
         searchMassageField.click();
-        searchMassageField.sendKeys("test massage");
+        searchMassageField.sendKeys(message);
 
         WebElement searchSubmitButton = driver.findElement(
                 By.xpath("//div[@class = 'col-sm-8']//input[@type ='submit']"));
@@ -308,12 +307,72 @@ public class YamaxTest {
     public void testConfirmErrorInEmailField() throws InterruptedException {
         System.setProperty("webdriver.chrome.driver", "/C:\\chromedriver_win32\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
 
         String url = "http://openweathermap.org/";
-        String expectedResult0 = "FAQ";
+        String message = "another test message";
+        String expectedResult = "can't be blank";
 
         driver.get(url);
         Thread.sleep(2000);
+
+        WebElement searchSupportMenu = driver.findElement(
+                By.xpath("//div[@id ='support-dropdown']"));
+        Thread.sleep(2000);
+        searchSupportMenu.click();
+
+        WebElement searchAskAQuestSubmenu = driver.findElement(
+                By.xpath("//ul[@id='support-dropdown-menu']" +
+                        "/li/a[@href = 'https://home.openweathermap.org/questions']"));
+        Thread.sleep(2000);
+        searchAskAQuestSubmenu.click();
+
+        String mainWindows = driver.getWindowHandle(); // getting Id of mainWindows
+        for (String windowsHandle : driver.getWindowHandles()) {
+            if (!mainWindows.contentEquals(windowsHandle)) {
+                driver.switchTo().window(windowsHandle);
+                break;
+            }
+        }
+
+        WebElement searchSubjectField = driver.findElement(
+                By.xpath("//div[@class = 'col-sm-8']/select[@id='question_form_subject']"));
+        Thread.sleep(2000);
+        searchSubjectField.click();
+
+        WebElement searchSubjectFieldText = driver.findElement(
+                By.xpath("//div[@class = 'col-sm-8']/select[@id='question_form_subject']//option[6]"));
+        Thread.sleep(2000);
+        searchSubjectFieldText.click();
+        searchSubjectField.click();
+
+        WebElement searchMessageField = driver.findElement(
+                By.xpath("//textarea[@class = 'form-control text required']"));
+        Thread.sleep(2000);
+        searchMessageField.click();
+        searchMessageField.sendKeys(message);
+
+        String askQuestionWindow = driver.getWindowHandle();
+        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='reCAPTCHA']")));
+        Thread.sleep(2000);
+        WebElement searchCaptchaElement = driver.findElement(
+                By.xpath("//div[@class='rc-anchor-center-container']"));
+        searchCaptchaElement.click();
+        Thread.sleep(7000);
+
+        driver.switchTo().window(askQuestionWindow);
+
+        WebElement searchSubmitButton = driver.findElement(
+                By.xpath("//div[@class = 'col-sm-8']//input[@type ='submit']"));
+        Thread.sleep(2000);
+        searchSubmitButton.click();
+
+        WebElement searchCantBeBlankMessage = driver.findElement(
+                By.xpath("//span[@class = 'help-block']"));
+        Thread.sleep(2000);
+        String actualResult = searchCantBeBlankMessage.getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
 
         driver.quit();
     }
