@@ -5,6 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+
 public class YamaxTest {
 //  TC_1_1 Test Case:
 //  //1. Открыть страницу http://openweathermap.org/
@@ -79,8 +80,8 @@ public class YamaxTest {
         Thread.sleep(2000);
 
         WebElement h1GuideHeader = driver.findElement(By.xpath("//h1[@class = 'breadcrumb-title']"));
+
         String actualResult0 = h1GuideHeader.getText();
-        ;
         String actualResult1 = driver.getCurrentUrl();
         String actualResult2 = driver.getTitle();
 
@@ -102,20 +103,26 @@ public class YamaxTest {
         WebDriver driver = new ChromeDriver();
 
         String url = "http://openweathermap.org/";
-        String expectedResult = "Imperial: °F, mph";
+        String expectedResult0 = "Imperial: °F, mph";
+        String expectedResult1 = "F";
 
         driver.get(url);
         Thread.sleep(2000);
+
         WebElement searchImperialField = driver.findElement(
                 By.xpath("//div[@class = 'switch-container']/div[3]"));
         Thread.sleep(2000);
-
         searchImperialField.click();
+        String actualResult0 = searchImperialField.getText();
+
+        WebElement searchFahrenheitSign = driver.findElement(
+                By.xpath("//div[@id='weather-widget']//span[@class = 'heading']"));
         Thread.sleep(2000);
+        String actualResult1 = searchFahrenheitSign.getText();
+        actualResult1 = actualResult1.substring(actualResult1.length()-1);
 
-        String actualResult = searchImperialField.getText();
-
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(actualResult0, expectedResult0);
+        Assert.assertEquals(actualResult1, expectedResult1);
 
         driver.quit();
     }
@@ -143,18 +150,16 @@ public class YamaxTest {
         WebElement searchStickFooterPanelText = driver.findElement(
                 By.xpath("//p[@class ='stick-footer-panel__description']"));
         Thread.sleep(2000);
+        String actualResult0 = searchStickFooterPanelText.getText();
 
         WebElement searchButtonAllowAll = driver.findElement(
                 By.xpath("//button[@class = 'stick-footer-panel__link']"));
         Thread.sleep(2000);
+        String actualResult1 = searchButtonAllowAll.getText();
 
         WebElement searchButtonManageCookies = driver.findElement(
                 By.xpath("//a[@href ='/cookies-settings']"));
         Thread.sleep(2000);
-
-
-        String actualResult0 = searchStickFooterPanelText.getText();
-        String actualResult1 = searchButtonAllowAll.getText();
         String actualResult2 = searchButtonManageCookies.getText();
 
         Assert.assertEquals(actualResult0, expectedResult0);
